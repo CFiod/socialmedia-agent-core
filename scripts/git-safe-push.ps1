@@ -87,6 +87,16 @@ Write-Host ""
 Write-Host "[GIT] Adicionando arquivos com git add ." -ForegroundColor Yellow
 git add .
 
+# GUARD: verificar se .env entrou no stage por engano
+$stagedEnv = git diff --cached --name-only | Select-String -Pattern '\.env'
+if ($stagedEnv) {
+    Write-Host "[ERRO] .env foi adicionado ao stage acidentalmente!" -ForegroundColor Red
+    Write-Host "       Revertendo git add e abortando." -ForegroundColor Red
+    git reset HEAD .env 2>$null
+    git reset HEAD .env.* 2>$null
+    exit 1
+}
+
 # 7. Solicitar mensagem de commit
 $mensagem = Read-Host "[INPUT] Digite a mensagem do commit (Enter para usar padrao)"
 
