@@ -1,0 +1,65 @@
+{
+  "edicoes": [
+    {
+      "campo": "texto_principal",
+      "antes": "Você está irritada?, mesmo quando você tenta ignorar.",
+      "depois": "Você está irritada, mesmo quando você tanta ignorar?",
+      "data": "2026-04-13"
+    },
+    {
+      "campo": "caption",
+      "antes": "Superar o Complexo de Édipo é possível, não está sozinho",
+      "depois": "Superar o Complexo de Édipo é possível, você não está sozinho",
+      "data": "2026-04-22"
+    },
+    {
+      "campo": "texto_principal",
+      "antes": "Você adia por medo de falhar",
+      "depois": "d",
+      "data": "2026-04-24"
+    },
+    {
+      "campo": "texto_secundario",
+      "antes": "E se não for bom o suficiente?",
+      "depois": "d",
+      "data": "2026-04-24"
+    },
+    {
+      "campo": "descricao_visual",
+      "antes": "woman 30s, looking at herself in the mirror, soft beige room, bright soft lighting, watercolor_soft",
+      "depois": "\"Man 45+, looking at herself in the mirror, soft beige room, bright soft lighting, watercolor_soft\"",
+      "data": "2026-04-24"
+    },
+    {
+      "campo": "texto_principal",
+      "antes": "Você se sente sozinha nessa luta",
+      "depois": "Você se sente sozinha nessa luta?",
+      "data": "2026-04-25"
+    },
+    {
+      "campo": "texto_secundario",
+      "antes": "Mas não está sozinha",
+      "depois": "Mas VOCÊ não está sozinha!",
+      "data": "2026-04-25"
+    },
+    {
+      "campo": "texto_principal",
+      "antes": "Você sente que algo está errado",
+      "depois": "Você sente que algo está errado!",
+      "data": "2026-04-27"
+    },
+    {
+      "campo": "texto_secundario",
+      "antes": "Mas não consegue identificar o que é",
+      "depois": "Mas não consegue identificar o que é?",
+      "data": "2026-04-27"
+    },
+    {
+      "campo": "texto_secundario",
+      "antes": "Me chama no WhatsApp para começar",
+      "depois": "Me chama no Whatsapp para começar a sua mudança!",
+      "data": "2026-04-29"
+    }
+  ],
+  "padroes": []
+}

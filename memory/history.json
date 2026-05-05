@@ -1,0 +1,68 @@
+{
+  "version": "3.0",
+  "entries": [
+    {
+      "scene_type": "silhueta",
+      "composition": "center_focus",
+      "style": "ugc_raw",
+      "hook_pattern": "identificacao",
+      "copy_structure": "impacto_curto",
+      "copy_intent": "engajar",
+      "gender": "none",
+      "environment": "cafe_livraria",
+      "objetivo": "engajamento",
+      "tipoPost": "frase_curta",
+      "emotionId": "curiosidade",
+      "headline": "Você carrega um peso que ninguém vê",
+      "typography_pair": "clean_conversion",
+      "persona": "no_person",
+      "timestamp": "2026-05-04T17:47:08.938Z",
+      "id": "post_1777916828956_cjp5fz"
+    },
+    {
+      "scene_type": "objeto",
+      "composition": "split_emotion",
+      "style": "brutalist_psycho",
+      "hook_pattern": "verdade_desconfortavel",
+      "copy_structure": "expansao_emocional",
+      "copy_intent": "atrair",
+      "gender": "none",
+      "environment": "noturno_poetico",
+      "objetivo": "compartilhamento",
+      "tipoPost": "verdade_dura",
+      "emotionId": "tensao",
+      "headline": "Você não é forte",
+      "typography_pair": "editorial_power",
+      "persona": "woman_30_latina",
+      "timestamp": "2026-05-04T17:47:09.084Z",
+      "id": "post_1777916829084_t768xj"
+    },
+    {
+      "scene_type": "simbolico",
+      "composition": "symbolic_scene",
+      "style": "brutalist_psycho",
+      "hook_pattern": "dor_oculta",
+      "copy_structure": "impacto_curto",
+      "copy_intent": "atrair",
+      "gender": "none",
+      "environment": "interior_intimo",
+      "objetivo": "compartilhamento",
+      "tipoPost": "verdade_dura",
+      "emotionId": "tensao",
+      "headline": "A culpa que você sente",
+      "typography_pair": "editorial_power",
+      "persona": "woman_25_moderna",
+      "timestamp": "2026-05-04T17:47:09.164Z",
+      "id": "post_1777916829164_xfuh3v"
+    }
+  ],
+  "constraints": {
+    "max_consecutive_same_scene": 1,
+    "max_consecutive_same_composition": 1,
+    "max_human_in_last_5": 3,
+    "max_same_gender_in_last_4": 2,
+    "max_same_hook_in_last_5": 2,
+    "max_same_environment_in_last_3": 1,
+    "max_same_style_in_last_3": 2
+  }
+}

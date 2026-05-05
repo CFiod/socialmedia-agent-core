@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview - {{TIPO}} - {{TEMA}}</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { text-align: center; }
+        .content-wrap { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 30px; }
+        .slide { background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 350px; }
+        .slide img { width: 100%; border-radius: 4px; display: block; margin-bottom: 10px; }
+        .slide-title { font-weight: bold; font-size: 1.1em; margin-bottom: 5px; }
+        .caption { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-top: 40px; white-space: pre-wrap; margin-bottom: 40px;}
+        .caption p { margin: 0; padding-bottom: 15px; }
+        .tags { color: #0066cc; margin-top: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Preview: {{TEMA}} ({{TIPO}})</h1>
+        
+        <div class="content-wrap">
+            {{SLIDES_HTML}}
+        </div>
+
+        <div class="caption">
+            <h3>Legenda original</h3>
+            <p>{{CAPTION}}</p>
+            <div class="tags">{{HASHTAGS}}</div>
+        </div>
+    </div>
+</body>
+</html>

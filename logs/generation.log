@@ -1,0 +1,697 @@
+
+[2026-04-28T17:00:30.430Z] [pipeline_start]
+{
+  "ts": "2026-04-28T17:00:30.430Z",
+  "step": "pipeline_start",
+  "execId": "2026-04-28T14-00-30_post",
+  "tipo": "post",
+  "tema": "Burnout",
+  "qtd": 1,
+  "withVariations": false
+}
+────────────────────────────────────────────────────────────
+[2026-04-28T17:00:30.440Z] [variationEngine]
+{
+  "ts": "2026-04-28T17:00:30.440Z",
+  "step": "variationEngine",
+  "tema": "Burnout",
+  "total_variations": 1,
+  "angles": [
+    "emocional"
+  ]
+}
+────────────────────────────────────────────────────────────
+[2026-04-28T17:00:30.441Z] [generationService_mode]
+{
+  "ts": "2026-04-28T17:00:30.441Z",
+  "step": "generationService_mode",
+  "execucaoId": "2026-04-28T14-00-30_post",
+  "mode": "single",
+  "preferredAngle": "emocional"
+}
+────────────────────────────────────────────────────────────
+[2026-04-28T17:00:30.442Z] [pipeline_run]
+{
+  "ts": "2026-04-28T17:00:30.442Z",
+  "step": "pipeline_run",
+  "tipo": "post",
+  "tema": "Burnout",
+  "qtd": 1,
+  "angulo": "emocional"
+}
+────────────────────────────────────────────────────────────
+[2026-04-28T17:00:30.443Z] [pipeline_emotion]
+{
+  "ts": "2026-04-28T17:00:30.443Z",
+  "step": "pipeline_emotion",
+  "emotion": "Curiosidade"
+}
+────────────────────────────────────────────────────────────
+[2026-04-28T17:00:30.445Z] [pipeline_style]
+{
+  "ts": "2026-04-28T17:00:30.445Z",
+  "step": "pipeline_style",
+  "base": "dark_luxury",
+  "grupo": "engajamento"
+}
+────────────────────────────────────────────────────────────
+[2026-04-28T17:00:30.445Z] [pipeline_copy_start]
+{
+  "ts": "2026-04-28T17:00:30.445Z",
+  "step": "pipeline_copy_start",
+  "tema": "Burnout"
+}
+────────────────────────────────────────────────────────────
+[2026-04-28T17:00:32.320Z] [pipeline_copy_done]
+{
+  "ts": "2026-04-28T17:00:32.320Z",
+  "step": "pipeline_copy_done",
+  "slides": 1
+}
+────────────────────────────────────────────────────────────
+[2026-04-28T17:00:32.321Z] [pipeline_artdirection_start]
+{
+  "ts": "2026-04-28T17:00:32.321Z",
+  "step": "pipeline_artdirection_start",
+  "slides": 1
+}
+────────────────────────────────────────────────────────────
+[2026-04-28T17:00:33.040Z] [pipeline_artdirection_done]
+{
+  "ts": "2026-04-28T17:00:33.040Z",
+  "step": "pipeline_artdirection_done"
+}
+────────────────────────────────────────────────────────────
+[2026-04-28T17:00:33.041Z] [pipeline_scene_start]
+{
+  "ts": "2026-04-28T17:00:33.041Z",
+  "step": "pipeline_scene_start"
+}
+────────────────────────────────────────────────────────────
+[2026-04-28T17:00:33.045Z] [pipeline_scene_done]
+{
+  "ts": "2026-04-28T17:00:33.045Z",
+  "step": "pipeline_scene_done",
+  "slides": 1
+}
+────────────────────────────────────────────────────────────
+[2026-04-28T17:00:33.054Z] [pipeline_end]
+{
+  "ts": "2026-04-28T17:00:33.054Z",
+  "step": "pipeline_end",
+  "execId": "2026-04-28T14-00-30_post",
+  "success": true,
+  "duration_ms": 2624
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:33:45.594Z] [pipeline_start]
+{
+  "ts": "2026-04-29T11:33:45.594Z",
+  "step": "pipeline_start",
+  "execId": "2026-04-29T08-33-45_post",
+  "tipo": "post",
+  "tema": "A importancia de dar o primeiro passo",
+  "qtd": 1,
+  "withVariations": false
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:33:45.604Z] [variationEngine]
+{
+  "ts": "2026-04-29T11:33:45.604Z",
+  "step": "variationEngine",
+  "tema": "A importancia de dar o primeiro passo",
+  "total_variations": 1,
+  "angles": [
+    "emocional"
+  ]
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:33:45.605Z] [generationService_mode]
+{
+  "ts": "2026-04-29T11:33:45.605Z",
+  "step": "generationService_mode",
+  "execucaoId": "2026-04-29T08-33-45_post",
+  "mode": "single",
+  "preferredAngle": "emocional"
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:33:45.606Z] [pipeline_run]
+{
+  "ts": "2026-04-29T11:33:45.606Z",
+  "step": "pipeline_run",
+  "tipo": "post",
+  "tema": "A importancia de dar o primeiro passo",
+  "qtd": 1,
+  "angulo": "emocional"
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:33:45.606Z] [pipeline_emotion]
+{
+  "ts": "2026-04-29T11:33:45.606Z",
+  "step": "pipeline_emotion",
+  "emotion": "Curiosidade"
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:33:45.608Z] [pipeline_style]
+{
+  "ts": "2026-04-29T11:33:45.608Z",
+  "step": "pipeline_style",
+  "base": "ugc_raw",
+  "grupo": "engajamento"
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:33:45.609Z] [pipeline_copy_start]
+{
+  "ts": "2026-04-29T11:33:45.609Z",
+  "step": "pipeline_copy_start",
+  "tema": "A importancia de dar o primeiro passo"
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:33:47.669Z] [pipeline_copy_done]
+{
+  "ts": "2026-04-29T11:33:47.669Z",
+  "step": "pipeline_copy_done",
+  "slides": 1
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:33:47.670Z] [pipeline_artdirection_start]
+{
+  "ts": "2026-04-29T11:33:47.670Z",
+  "step": "pipeline_artdirection_start",
+  "slides": 1
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:33:48.394Z] [pipeline_artdirection_done]
+{
+  "ts": "2026-04-29T11:33:48.394Z",
+  "step": "pipeline_artdirection_done"
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:33:48.395Z] [pipeline_scene_start]
+{
+  "ts": "2026-04-29T11:33:48.395Z",
+  "step": "pipeline_scene_start"
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:33:48.399Z] [pipeline_scene_done]
+{
+  "ts": "2026-04-29T11:33:48.399Z",
+  "step": "pipeline_scene_done",
+  "slides": 1
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:33:48.405Z] [pipeline_end]
+{
+  "ts": "2026-04-29T11:33:48.405Z",
+  "step": "pipeline_end",
+  "execId": "2026-04-29T08-33-45_post",
+  "success": true,
+  "duration_ms": 2811
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:34:23.348Z] [pipeline_start]
+{
+  "ts": "2026-04-29T11:34:23.348Z",
+  "step": "pipeline_start",
+  "execId": "2026-04-29T08-34-23_autor",
+  "tipo": "autor",
+  "tema": "A coragem de ser imperfeito",
+  "qtd": 1,
+  "withVariations": false
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:34:23.350Z] [variationEngine]
+{
+  "ts": "2026-04-29T11:34:23.350Z",
+  "step": "variationEngine",
+  "tema": "A coragem de ser imperfeito",
+  "total_variations": 1,
+  "angles": [
+    "emocional"
+  ]
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:34:23.351Z] [generationService_mode]
+{
+  "ts": "2026-04-29T11:34:23.351Z",
+  "step": "generationService_mode",
+  "execucaoId": "2026-04-29T08-34-23_autor",
+  "mode": "single",
+  "preferredAngle": "emocional"
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:34:23.352Z] [pipeline_run]
+{
+  "ts": "2026-04-29T11:34:23.352Z",
+  "step": "pipeline_run",
+  "tipo": "autor",
+  "tema": "A coragem de ser imperfeito",
+  "qtd": 1,
+  "angulo": "emocional"
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:34:23.352Z] [pipeline_emotion]
+{
+  "ts": "2026-04-29T11:34:23.352Z",
+  "step": "pipeline_emotion",
+  "emotion": "Curiosidade"
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:34:23.353Z] [pipeline_style]
+{
+  "ts": "2026-04-29T11:34:23.353Z",
+  "step": "pipeline_style",
+  "base": "cinematic_soft",
+  "grupo": "engajamento"
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:34:23.353Z] [pipeline_copy_start]
+{
+  "ts": "2026-04-29T11:34:23.353Z",
+  "step": "pipeline_copy_start",
+  "tema": "A coragem de ser imperfeito"
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:34:25.002Z] [pipeline_copy_done]
+{
+  "ts": "2026-04-29T11:34:25.002Z",
+  "step": "pipeline_copy_done",
+  "slides": 1
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:34:25.003Z] [pipeline_artdirection_start]
+{
+  "ts": "2026-04-29T11:34:25.003Z",
+  "step": "pipeline_artdirection_start",
+  "slides": 1
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:34:25.395Z] [pipeline_artdirection_done]
+{
+  "ts": "2026-04-29T11:34:25.395Z",
+  "step": "pipeline_artdirection_done"
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:34:25.396Z] [pipeline_scene_start]
+{
+  "ts": "2026-04-29T11:34:25.396Z",
+  "step": "pipeline_scene_start"
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:34:25.399Z] [pipeline_scene_done]
+{
+  "ts": "2026-04-29T11:34:25.399Z",
+  "step": "pipeline_scene_done",
+  "slides": 1
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T11:34:25.403Z] [pipeline_end]
+{
+  "ts": "2026-04-29T11:34:25.403Z",
+  "step": "pipeline_end",
+  "execId": "2026-04-29T08-34-23_autor",
+  "success": true,
+  "duration_ms": 2055
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T12:57:16.022Z] [pipeline_start]
+{
+  "ts": "2026-04-29T12:57:16.022Z",
+  "step": "pipeline_start",
+  "execId": "2026-04-29T09-57-16_post",
+  "tipo": "post",
+  "tema": "Burnout",
+  "qtd": 1,
+  "withVariations": false
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T12:57:16.026Z] [variationEngine]
+{
+  "ts": "2026-04-29T12:57:16.026Z",
+  "step": "variationEngine",
+  "tema": "Burnout",
+  "total_variations": 1,
+  "angles": [
+    "emocional"
+  ]
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T12:57:16.027Z] [generationService_mode]
+{
+  "ts": "2026-04-29T12:57:16.027Z",
+  "step": "generationService_mode",
+  "execucaoId": "2026-04-29T09-57-16_post",
+  "mode": "single",
+  "preferredAngle": "emocional"
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T12:57:16.028Z] [pipeline_run]
+{
+  "ts": "2026-04-29T12:57:16.028Z",
+  "step": "pipeline_run",
+  "tipo": "post",
+  "tema": "Burnout",
+  "qtd": 1,
+  "angulo": "emocional"
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T12:57:16.030Z] [pipeline_emotion]
+{
+  "ts": "2026-04-29T12:57:16.030Z",
+  "step": "pipeline_emotion",
+  "emotion": "Curiosidade"
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T12:57:16.036Z] [pipeline_style]
+{
+  "ts": "2026-04-29T12:57:16.036Z",
+  "step": "pipeline_style",
+  "base": "cinematic_soft",
+  "grupo": "engajamento"
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T12:57:16.037Z] [pipeline_copy_start]
+{
+  "ts": "2026-04-29T12:57:16.037Z",
+  "step": "pipeline_copy_start",
+  "tema": "Burnout"
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T12:57:18.054Z] [pipeline_copy_done]
+{
+  "ts": "2026-04-29T12:57:18.054Z",
+  "step": "pipeline_copy_done",
+  "slides": 1
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T12:57:18.055Z] [pipeline_artdirection_start]
+{
+  "ts": "2026-04-29T12:57:18.055Z",
+  "step": "pipeline_artdirection_start",
+  "slides": 1
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T12:57:18.371Z] [pipeline_artdirection_done]
+{
+  "ts": "2026-04-29T12:57:18.371Z",
+  "step": "pipeline_artdirection_done"
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T12:57:18.371Z] [pipeline_scene_start]
+{
+  "ts": "2026-04-29T12:57:18.371Z",
+  "step": "pipeline_scene_start"
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T12:57:18.374Z] [pipeline_scene_done]
+{
+  "ts": "2026-04-29T12:57:18.374Z",
+  "step": "pipeline_scene_done",
+  "slides": 1
+}
+────────────────────────────────────────────────────────────
+[2026-04-29T12:57:18.377Z] [pipeline_end]
+{
+  "ts": "2026-04-29T12:57:18.377Z",
+  "step": "pipeline_end",
+  "execId": "2026-04-29T09-57-16_post",
+  "success": true,
+  "duration_ms": 2355
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:25.511Z] [pipeline_start]
+{
+  "ts": "2026-05-04T19:42:25.511Z",
+  "step": "pipeline_start",
+  "execId": "2026-05-04T16-42-25_post",
+  "tipo": "post",
+  "tema": "Burnout",
+  "qtd": 1,
+  "withVariations": true
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:25.522Z] [variationEngine]
+{
+  "ts": "2026-05-04T19:42:25.522Z",
+  "step": "variationEngine",
+  "tema": "Burnout",
+  "total_variations": 4,
+  "angles": [
+    "emocional",
+    "racional",
+    "confronto",
+    "curiosidade"
+  ]
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:25.523Z] [generationService_ab]
+{
+  "ts": "2026-05-04T19:42:25.523Z",
+  "step": "generationService_ab",
+  "execucaoId": "2026-05-04T16-42-25_post",
+  "total_variations": 4,
+  "angles": [
+    "emocional",
+    "racional",
+    "confronto",
+    "curiosidade"
+  ]
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:25.525Z] [pipeline_run]
+{
+  "ts": "2026-05-04T19:42:25.525Z",
+  "step": "pipeline_run",
+  "tipo": "post",
+  "tema": "Burnout",
+  "qtd": 1,
+  "angulo": "emocional"
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:25.526Z] [pipeline_emotion]
+{
+  "ts": "2026-05-04T19:42:25.526Z",
+  "step": "pipeline_emotion",
+  "emotion": "Curiosidade"
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:25.536Z] [pipeline_style]
+{
+  "ts": "2026-05-04T19:42:25.536Z",
+  "step": "pipeline_style",
+  "base": "cinematic_soft",
+  "grupo": "engajamento"
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:25.537Z] [pipeline_copy_start]
+{
+  "ts": "2026-05-04T19:42:25.537Z",
+  "step": "pipeline_copy_start",
+  "tema": "Burnout"
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:28.538Z] [pipeline_copy_done]
+{
+  "ts": "2026-05-04T19:42:28.538Z",
+  "step": "pipeline_copy_done",
+  "slides": 1
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:28.539Z] [pipeline_artdirection_start]
+{
+  "ts": "2026-05-04T19:42:28.539Z",
+  "step": "pipeline_artdirection_start",
+  "slides": 1
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:29.364Z] [pipeline_artdirection_done]
+{
+  "ts": "2026-05-04T19:42:29.364Z",
+  "step": "pipeline_artdirection_done"
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:29.365Z] [pipeline_scene_start]
+{
+  "ts": "2026-05-04T19:42:29.365Z",
+  "step": "pipeline_scene_start"
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:29.458Z] [pipeline_scene_done]
+{
+  "ts": "2026-05-04T19:42:29.458Z",
+  "step": "pipeline_scene_done",
+  "slides": 1
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:29.556Z] [pipeline_run]
+{
+  "ts": "2026-05-04T19:42:29.556Z",
+  "step": "pipeline_run",
+  "tipo": "post",
+  "tema": "Burnout",
+  "qtd": 1,
+  "angulo": "racional"
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:29.557Z] [pipeline_emotion]
+{
+  "ts": "2026-05-04T19:42:29.557Z",
+  "step": "pipeline_emotion",
+  "emotion": "Curiosidade"
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:29.646Z] [pipeline_style]
+{
+  "ts": "2026-05-04T19:42:29.646Z",
+  "step": "pipeline_style",
+  "base": "dark_luxury",
+  "grupo": "engajamento"
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:29.647Z] [pipeline_copy_start]
+{
+  "ts": "2026-05-04T19:42:29.647Z",
+  "step": "pipeline_copy_start",
+  "tema": "Burnout"
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:32.116Z] [pipeline_copy_done]
+{
+  "ts": "2026-05-04T19:42:32.116Z",
+  "step": "pipeline_copy_done",
+  "slides": 1
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:32.117Z] [pipeline_artdirection_start]
+{
+  "ts": "2026-05-04T19:42:32.117Z",
+  "step": "pipeline_artdirection_start",
+  "slides": 1
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:32.276Z] [pipeline_artdirection_done]
+{
+  "ts": "2026-05-04T19:42:32.276Z",
+  "step": "pipeline_artdirection_done"
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:32.277Z] [pipeline_scene_start]
+{
+  "ts": "2026-05-04T19:42:32.277Z",
+  "step": "pipeline_scene_start"
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:32.289Z] [pipeline_scene_done]
+{
+  "ts": "2026-05-04T19:42:32.289Z",
+  "step": "pipeline_scene_done",
+  "slides": 1
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:32.306Z] [pipeline_run]
+{
+  "ts": "2026-05-04T19:42:32.306Z",
+  "step": "pipeline_run",
+  "tipo": "post",
+  "tema": "Burnout",
+  "qtd": 1,
+  "angulo": "confronto"
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:32.307Z] [pipeline_emotion]
+{
+  "ts": "2026-05-04T19:42:32.307Z",
+  "step": "pipeline_emotion",
+  "emotion": "Curiosidade"
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:32.312Z] [pipeline_style]
+{
+  "ts": "2026-05-04T19:42:32.312Z",
+  "step": "pipeline_style",
+  "base": "cinematic_soft",
+  "grupo": "engajamento"
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:32.313Z] [pipeline_copy_start]
+{
+  "ts": "2026-05-04T19:42:32.313Z",
+  "step": "pipeline_copy_start",
+  "tema": "Burnout"
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:33.729Z] [pipeline_copy_done]
+{
+  "ts": "2026-05-04T19:42:33.729Z",
+  "step": "pipeline_copy_done",
+  "slides": 1
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:33.730Z] [pipeline_artdirection_start]
+{
+  "ts": "2026-05-04T19:42:33.730Z",
+  "step": "pipeline_artdirection_start",
+  "slides": 1
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:33.835Z] [pipeline_artdirection_done]
+{
+  "ts": "2026-05-04T19:42:33.835Z",
+  "step": "pipeline_artdirection_done"
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:33.836Z] [pipeline_scene_start]
+{
+  "ts": "2026-05-04T19:42:33.836Z",
+  "step": "pipeline_scene_start"
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:33.839Z] [pipeline_scene_done]
+{
+  "ts": "2026-05-04T19:42:33.839Z",
+  "step": "pipeline_scene_done",
+  "slides": 1
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:33.879Z] [pipeline_run]
+{
+  "ts": "2026-05-04T19:42:33.879Z",
+  "step": "pipeline_run",
+  "tipo": "post",
+  "tema": "Burnout",
+  "qtd": 1,
+  "angulo": "curiosidade"
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:33.880Z] [pipeline_emotion]
+{
+  "ts": "2026-05-04T19:42:33.880Z",
+  "step": "pipeline_emotion",
+  "emotion": "Curiosidade"
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:33.908Z] [pipeline_style]
+{
+  "ts": "2026-05-04T19:42:33.908Z",
+  "step": "pipeline_style",
+  "base": "ugc_raw",
+  "grupo": "engajamento"
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:33.909Z] [pipeline_copy_start]
+{
+  "ts": "2026-05-04T19:42:33.909Z",
+  "step": "pipeline_copy_start",
+  "tema": "Burnout"
+}
+────────────────────────────────────────────────────────────
+[2026-05-04T19:42:34.235Z] [generationService_ab_ERROR]
+{
+  "ts": "2026-05-04T19:42:34.235Z",
+  "step": "generationService_ab_ERROR",
+  "message": "Todas as tentativas de geração de conteúdo falharam: Todos os modelos falharam na execução.",
+  "stack": "Error: Todas as tentativas de geração de conteúdo falharam: Todos os modelos falharam na execução.\n    at generateContent (file:///C:/SocialMedia_Agent/services/contentService.js:481:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runPipeline (file:///C:/SocialMedia_Agent/core/pipeline.js:84:18)\n    at async generateWithVariations (file:///C:/SocialMedia_Agent/services/generationService.js:168:22)\n    at async generateContent (file:///C:/Social",
+  "varId": "curiosidade",
+  "tema": "Burnout"
+}
+────────────────────────────────────────────────────────────

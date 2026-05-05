@@ -1,0 +1,395 @@
+Boa — agora você entrou num nível onde qualidade visual real começa a diferenciar seu SaaS.
+
+Vou ser direto: hoje seu pipeline provavelmente é cego para semântica espacial da imagem. Ele gera imagem → aplica layout → sobrepõe texto. Isso inevitavelmente coloca texto em cima de rosto.
+
+Você precisa introduzir uma camada de “consciência visual” (vision-aware layouting).
+
+🧠 SOLUÇÃO: “Face-Aware Composition Engine”
+🔥 Ideia central
+
+Antes de posicionar texto:
+
+detectar áreas importantes da imagem (principalmente rostos)
+→ gerar um mapa de zonas seguras
+→ só então aplicar layout
+
+🧩 ONDE PLUGAR NO SEU PROJETO
+
+Você já tem:
+
+visionService.js ✅ (perfeito, já é o ponto certo)
+layout_engine.js
+imageOverlayer.js
+
+👉 A inteligência entra entre:
+
+imagem gerada → visionService → layout_engine → overlay
+🧠 NOVO FLUXO
+1. gerar imagem
+2. detectar rosto(s)
+3. gerar "safe zones"
+4. escolher layout baseado nisso
+5. posicionar texto dinamicamente
+🧪 IMPLEMENTAÇÃO PRÁTICA
+1. DETECÇÃO DE ROSTO
+visionService.js (upgrade)
+
+Se ainda não tem isso, implemente com:
+
+OpenCV (local)
+ou API (Replicate / AWS Rekognition)
+Exemplo simples (mock inteligente):
+export async function detectFaces(imagePath) {
+  // retorno esperado
+  return [
+    {
+      x: 420,
+      y: 300,
+      width: 250,
+      height: 250
+    }
+  ];
+}
+2. GERAR SAFE ZONES
+
+Novo módulo:
+
+safeZoneEngine.js
+export function generateSafeZones(imageWidth, imageHeight, faces) {
+  const zones = [];
+
+  const margin = 40;
+
+  const forbiddenZones = faces.map(face => ({
+    x1: face.x - margin,
+    y1: face.y - margin,
+    x2: face.x + face.width + margin,
+    y2: face.y + face.height + margin
+  }));
+
+  // zonas padrão candidatas
+  const candidates = [
+    { name: "top", x: 0, y: 0, w: imageWidth, h: imageHeight * 0.25 },
+    { name: "bottom", x: 0, y: imageHeight * 0.75, w: imageWidth, h: imageHeight * 0.25 },
+    { name: "left", x: 0, y: 0, w: imageWidth * 0.35, h: imageHeight },
+    { name: "right", x: imageWidth * 0.65, y: 0, w: imageWidth * 0.35, h: imageHeight }
+  ];
+
+  function intersects(a, b) {
+    return !(a.x > b.x2 || a.x + a.w < b.x1 || a.y > b.y2 || a.y + a.h < b.y1);
+  }
+
+  for (const zone of candidates) {
+    const isSafe = !forbiddenZones.some(fz => intersects(zone, fz));
+    if (isSafe) zones.push(zone);
+  }
+
+  return zones;
+}
+3. INTELIGÊNCIA DE ESCOLHA DE LAYOUT
+layout_engine.js (upgrade)
+import { generateSafeZones } from "./safeZoneEngine.js";
+import { detectFaces } from "../services/visionService.js";
+
+export async function resolveLayout(imagePath, imageMeta) {
+  const faces = await detectFaces(imagePath);
+
+  const safeZones = generateSafeZones(
+    imageMeta.width,
+    imageMeta.height,
+    faces
+  );
+
+  // prioridade estratégica
+  const priority = ["bottom", "top", "right", "left"];
+
+  const selectedZone = priority.find(p =>
+    safeZones.find(z => z.name === p)
+  );
+
+  return selectedZone || { name: "bottom" }; // fallback
+}
+4. POSICIONAMENTO DINÂMICO DO TEXTO
+imageOverlayer.js
+export function getTextPosition(zone, imageWidth, imageHeight) {
+  switch (zone.name) {
+    case "top":
+      return { x: imageWidth / 2, y: imageHeight * 0.15 };
+
+    case "bottom":
+      return { x: imageWidth / 2, y: imageHeight * 0.85 };
+
+    case "left":
+      return { x: imageWidth * 0.2, y: imageHeight / 2 };
+
+    case "right":
+      return { x: imageWidth * 0.8, y: imageHeight / 2 };
+
+    default:
+      return { x: imageWidth / 2, y: imageHeight * 0.85 };
+  }
+}
+🧠 INTELIGÊNCIA EXTRA (NÍVEL SAAS)
+🔥 Score de risco de colisão
+
+Antes de renderizar:
+
+function calculateCollisionRisk(textBox, faces) {
+  return faces.some(face => overlap(textBox, face));
+}
+
+Se risco alto:
+
+→ muda layout automaticamente
+→ reduz fonte
+→ adiciona blur atrás do texto
+
+🎯 BACKGROUND INTELIGENTE (GAME CHANGER)
+
+Se não houver zona segura boa:
+
+👉 cria fundo artificial atrás do texto
+
+applyTextBackground({
+  type: "gradient_blur",
+  opacity: 0.6,
+  padding: 20
+});
+💡 MELHORIA NO PROMPT (IMPORTANTE)
+
+Você pode reduzir o problema já na origem:
+
+No promptBuilder:
+
+IMPORTANT:
+- Leave negative space for text
+- Subject positioned slightly off-center
+- Avoid placing face in center
+- Composition with clear empty areas
+🧠 RESULTADO FINAL
+
+Você sai de:
+
+❌ IA burra que sobrepõe texto
+para:
+
+✅ Sistema que:
+
+entende imagem
+respeita rosto
+decide layout sozinho
+se adapta dinamicamente
+
+------------------------------
+
+🚀 V3 — ARCHITECTURE (NÍVEL SAAS REAL)
+🧠 Conceito central
+
+Scene → Attention Map → Layout → Render
+
+Ou seja:
+
+_semanticAnalysis
+   ↓
+sceneEngine (emocional + narrativa)
+   ↓
+attentionEngine (onde o olho vai olhar)
+   ↓
+safeZoneEngine (onde NÃO colocar texto)
+   ↓
+layoutEngine (decisão inteligente)
+   ↓
+renderEngine (overlay final)
+🔥 1. ATTENTION ENGINE (NOVO — DIFERENCIAL ABSURDO)
+
+Isso resolve 2 problemas:
+
+rosto
+áreas visualmente “pesadas” (luz, contraste, foco)
+attentionEngine.js
+export function simulateAttentionMap(scene) {
+  const map = [];
+
+  // prioridade 1: rosto
+  if (scene.faces?.length) {
+    scene.faces.forEach(face => {
+      map.push({
+        type: "face",
+        weight: 1.0,
+        area: expand(face, 60)
+      });
+    });
+  }
+
+  // prioridade 2: sujeito principal
+  if (scene.subjectPosition) {
+    map.push({
+      type: "subject",
+      weight: 0.8,
+      area: scene.subjectPosition
+    });
+  }
+
+  // prioridade 3: áreas de luz (simulação)
+  if (scene.lighting === "high_contrast") {
+    map.push({
+      type: "light_hotspot",
+      weight: 0.6,
+      area: {
+        x: scene.width * 0.6,
+        y: scene.height * 0.2,
+        w: 200,
+        h: 200
+      }
+    });
+  }
+
+  return map;
+}
+
+function expand(area, padding) {
+  return {
+    x: area.x - padding,
+    y: area.y - padding,
+    w: area.w + padding * 2,
+    h: area.h + padding * 2
+  };
+}
+🧠 2. SAFE ZONE V3 (AGORA COM PESO)
+safeZoneEngine.js (upgrade)
+export function generateSafeZonesV3(width, height, attentionMap) {
+  const zones = [
+    { name: "top", x: 0, y: 0, w: width, h: height * 0.25 },
+    { name: "bottom", x: 0, y: height * 0.75, w: width, h: height * 0.25 },
+    { name: "left", x: 0, y: 0, w: width * 0.35, h: height },
+    { name: "right", x: width * 0.65, y: 0, w: width * 0.35, h: height }
+  ];
+
+  return zones.map(zone => {
+    let risk = 0;
+
+    for (const attention of attentionMap) {
+      if (intersects(zone, attention.area)) {
+        risk += attention.weight;
+      }
+    }
+
+    return {
+      ...zone,
+      risk
+    };
+  }).sort((a, b) => a.risk - b.risk);
+}
+
+function intersects(a, b) {
+  return !(a.x > b.x + b.w || a.x + a.w < b.x || a.y > b.y + b.h || a.y + a.h < b.y);
+}
+🎯 3. LAYOUT ENGINE INTELIGENTE
+layoutEngine.js (V3)
+export function resolveLayoutV3(safeZones) {
+  const best = safeZones[0];
+
+  // fallback inteligente
+  if (best.risk > 0.7) {
+    return {
+      zone: best,
+      strategy: "background_overlay"
+    };
+  }
+
+  return {
+    zone: best,
+    strategy: "clean"
+  };
+}
+🎨 4. PROMPT BUILDER V3 (GERAÇÃO JÁ PREPARADA)
+
+Aqui está o salto de qualidade.
+
+promptBuilder.js (upgrade real)
+export function buildPromptV3(scene, layoutIntent) {
+  return `
+Cinematic instagram post, highly aesthetic.
+
+SCENE:
+${scene.description}
+
+EMOTION:
+${scene.emotion}
+
+COMPOSITION RULES:
+- Subject off-center (${layoutIntent.zone.name})
+- Leave negative space on ${layoutIntent.zone.name}
+- Avoid placing face in center
+- Clear visual breathing room
+
+LIGHTING:
+- ${scene.lighting}
+- Soft gradients for text readability
+
+STYLE:
+- modern editorial photography
+- instagram premium aesthetic
+- high contrast but readable
+
+IMPORTANT:
+- empty space for text overlay
+- no clutter in ${layoutIntent.zone.name}
+`;
+}
+🧠 5. RENDER ENGINE (INTELIGENTE)
+renderEngine.js
+export function renderText({ ctx, text, zone, strategy }) {
+  if (strategy === "background_overlay") {
+    drawBlurBox(ctx, zone);
+  }
+
+  drawText(ctx, text, zone);
+}
+
+function drawBlurBox(ctx, zone) {
+  ctx.fillStyle = "rgba(0,0,0,0.5)";
+  ctx.fillRect(zone.x, zone.y, zone.w, zone.h);
+}
+🔥 6. PIPELINE FINAL (PLUGÁVEL)
+pipelineV3.js
+export async function runV3Pipeline(input) {
+  const scene = await sceneEngine(input);
+
+  const faces = await detectFaces(input.image);
+  scene.faces = faces;
+
+  const attentionMap = simulateAttentionMap(scene);
+
+  const safeZones = generateSafeZonesV3(
+    scene.width,
+    scene.height,
+    attentionMap
+  );
+
+  const layout = resolveLayoutV3(safeZones);
+
+  const prompt = buildPromptV3(scene, layout);
+
+  const image = await generateImage(prompt);
+
+  await renderFinal(image, layout);
+
+  return image;
+}
+🧠 O QUE VOCÊ GANHOU (DE VERDADE)
+Antes:
+imagem aleatória
+texto em cima de rosto
+estética inconsistente
+Agora (V3):
+imagem nasce com espaço para texto
+sistema entende atenção visual
+layout adaptativo
+fallback automático
+estética nível Canva AI / Midjourney editorial
+
+---------------------------------------
+
+Adaptar para meu formato atual de arquivos (data.json, posts/, etc.)
+

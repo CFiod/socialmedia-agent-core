@@ -1,0 +1,70 @@
+{
+  "version": "1.0",
+  "posts": [
+    {
+      "scene_type": "humano",
+      "composition": "side_weight",
+      "style": "brutalist_psycho",
+      "hook_pattern": "quebra_crenca",
+      "copy_intent": "converter",
+      "gender": "woman",
+      "objetivo": "conversao",
+      "tipoPost": "dor_solucao",
+      "headline": "A procrastinação não é preguiça",
+      "typography_pair": "raw_impact",
+      "logged_at": "2026-05-04T17:29:52.891Z"
+    },
+    {
+      "scene_type": "simbolico",
+      "composition": "symbolic_scene",
+      "style": "brutalist_psycho",
+      "hook_pattern": "dor_oculta",
+      "copy_intent": "atrair",
+      "gender": "none",
+      "objetivo": "compartilhamento",
+      "tipoPost": "quebra_padrao",
+      "headline": "A culpa que você sente",
+      "typography_pair": "editorial_power",
+      "logged_at": "2026-05-04T17:30:12.668Z"
+    },
+    {
+      "scene_type": "silhueta",
+      "composition": "center_focus",
+      "style": "ugc_raw",
+      "hook_pattern": "identificacao",
+      "copy_intent": "engajar",
+      "gender": "none",
+      "objetivo": "engajamento",
+      "tipoPost": "frase_curta",
+      "headline": "Você carrega um peso que ninguém vê",
+      "typography_pair": "clean_conversion",
+      "logged_at": "2026-05-04T17:47:08.959Z"
+    },
+    {
+      "scene_type": "objeto",
+      "composition": "split_emotion",
+      "style": "brutalist_psycho",
+      "hook_pattern": "verdade_desconfortavel",
+      "copy_intent": "atrair",
+      "gender": "none",
+      "objetivo": "compartilhamento",
+      "tipoPost": "verdade_dura",
+      "headline": "Você não é forte",
+      "typography_pair": "editorial_power",
+      "logged_at": "2026-05-04T17:47:09.086Z"
+    },
+    {
+      "scene_type": "simbolico",
+      "composition": "symbolic_scene",
+      "style": "brutalist_psycho",
+      "hook_pattern": "dor_oculta",
+      "copy_intent": "atrair",
+      "gender": "none",
+      "objetivo": "compartilhamento",
+      "tipoPost": "verdade_dura",
+      "headline": "A culpa que você sente",
+      "typography_pair": "editorial_power",
+      "logged_at": "2026-05-04T17:47:09.166Z"
+    }
+  ]
+}
