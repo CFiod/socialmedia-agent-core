@@ -5,9 +5,9 @@
 
 export const FONT_FAMILIES = {
   impacto: [
-    { id: 'bebas_neue', family: 'Bebas Neue', weight: 700, style: 'uppercase condensed', vibe: 'bold editorial' },
-    { id: 'oswald', family: 'Oswald', weight: 600, style: 'semi-condensed', vibe: 'modern authoritative' },
-    { id: 'anton', family: 'Anton', weight: 400, style: 'ultra-condensed', vibe: 'aggressive impact' },
+    { id: 'outfit', family: 'Outfit', weight: 700, style: 'contemporary bold', vibe: 'clean impactful' },
+    { id: 'space_grotesk', family: 'Space Grotesk', weight: 600, style: 'technical sans', vibe: 'modern premium' },
+    { id: 'poppins', family: 'Poppins', weight: 700, style: 'rounded bold', vibe: 'friendly impact' },
     { id: 'archivo_black', family: 'Archivo Black', weight: 900, style: 'extra-bold wide', vibe: 'powerful commanding' },
   ],
   emocao: [
@@ -29,22 +29,23 @@ export const FONT_FAMILIES = {
 };
 
 export const TYPE_PAIRS = [
-  { id: 'editorial_power', headline: 'bebas_neue', body: 'lora', vibe: 'editorial de impacto', best_for: ['verdade_dura', 'quebra_padrao', 'confronto'] },
-  { id: 'modern_minimal', headline: 'oswald', body: 'inter', vibe: 'minimalismo moderno', best_for: ['insight', 'educacional', 'checklist'] },
+  { id: 'editorial_power', headline: 'outfit', body: 'lora', vibe: 'editorial de impacto', best_for: ['verdade_dura', 'quebra_padrao', 'confronto'] },
+  { id: 'modern_minimal', headline: 'space_grotesk', body: 'inter', vibe: 'minimalismo moderno', best_for: ['insight', 'educacional', 'checklist'] },
   { id: 'emotional_depth', headline: 'dm_serif_display', body: 'dm_sans', vibe: 'profundidade emocional', best_for: ['identificacao', 'alivio', 'reflexao'] },
-  { id: 'raw_impact', headline: 'anton', body: 'source_sans_3', vibe: 'impacto bruto', best_for: ['tensao', 'provocacao', 'dor_solucao'] },
+  { id: 'clean_impact', headline: 'poppins', body: 'source_sans_3', vibe: 'impacto limpo', best_for: ['tensao', 'provocacao', 'dor_solucao'] },
   { id: 'classic_authority', headline: 'archivo_black', body: 'cormorant_garamond', vibe: 'autoridade clássica', best_for: ['autoridade', 'explicacao'] },
   { id: 'warm_human', headline: 'playfair_display', body: 'dm_sans', vibe: 'humanidade calorosa', best_for: ['empatia', 'acolhimento'] },
-  { id: 'clean_conversion', headline: 'oswald', body: 'poppins', vibe: 'conversão limpa', best_for: ['convite', 'cta', 'conversao'] },
-  { id: 'premium_editorial', headline: 'bebas_neue', body: 'space_grotesk', vibe: 'editorial premium', best_for: ['salvamento', 'guia'] },
+  { id: 'clean_conversion', headline: 'outfit', body: 'poppins', vibe: 'conversão limpa', best_for: ['convite', 'cta', 'conversao'] },
+  { id: 'premium_editorial', headline: 'space_grotesk', body: 'lora', vibe: 'editorial premium', best_for: ['salvamento', 'guia'] },
+  { id: 'serene_reflective', headline: 'lora', body: 'dm_sans', vibe: 'reflexão serena', best_for: ['reflexao', 'acolhimento', 'empatia'] },
 ];
 
 const HIERARCHY = {
-  impact_short:    { headline: { size: 1.0, w: 800, ls: '-0.02em', lh: 1.05, tx: 'uppercase' }, sub: { size: 0.42, w: 400, ls: '0.01em', lh: 1.4 }, cta: { size: 0.28, w: 600, ls: '0.03em', lh: 1.3 } },
+  impact_short:    { headline: { size: 0.85, w: 700, ls: '-0.01em', lh: 1.10, tx: 'none' },     sub: { size: 0.45, w: 400, ls: '0.01em', lh: 1.45 }, cta: { size: 0.30, w: 600, ls: '0.03em', lh: 1.3 } },
   emotional:       { headline: { size: 0.75, w: 700, ls: '-0.01em', lh: 1.15, tx: 'none' },     sub: { size: 0.50, w: 300, ls: '0.005em', lh: 1.5 }, cta: { size: 0.30, w: 500, ls: '0.02em', lh: 1.3 } },
-  cta_dominant:    { headline: { size: 0.65, w: 600, ls: '0em', lh: 1.2, tx: 'none' },           sub: { size: 0.40, w: 400, ls: '0.01em', lh: 1.4 }, cta: { size: 0.55, w: 800, ls: '0.02em', lh: 1.1, tx: 'uppercase' } },
+  cta_dominant:    { headline: { size: 0.65, w: 600, ls: '0em', lh: 1.2, tx: 'none' },           sub: { size: 0.40, w: 400, ls: '0.01em', lh: 1.4 }, cta: { size: 0.50, w: 700, ls: '0.02em', lh: 1.15, tx: 'none' } },
   educational:     { headline: { size: 0.70, w: 700, ls: '-0.01em', lh: 1.15, tx: 'none' },      sub: { size: 0.45, w: 400, ls: '0.005em', lh: 1.55 }, cta: { size: 0.28, w: 500, ls: '0.02em', lh: 1.3 } },
-  type_dominant:   { headline: { size: 1.3, w: 900, ls: '-0.03em', lh: 0.95, tx: 'uppercase' },   sub: { size: 0.35, w: 300, ls: '0.02em', lh: 1.5 }, cta: { size: 0.25, w: 500, ls: '0.03em', lh: 1.3, tx: 'uppercase' } },
+  type_dominant:   { headline: { size: 1.1, w: 800, ls: '-0.02em', lh: 1.0, tx: 'none' },        sub: { size: 0.38, w: 300, ls: '0.02em', lh: 1.5 }, cta: { size: 0.28, w: 500, ls: '0.03em', lh: 1.3, tx: 'none' } },
 };
 
 function resolveFont(fontId) {
@@ -55,9 +56,21 @@ function resolveFont(fontId) {
   return FONT_FAMILIES.impacto[0];
 }
 
+// Fontes condensadas/agressivas que devem ser bloqueadas em contextos emocionais
+const AGGRESSIVE_FONT_IDS = ['bebas_neue', 'oswald', 'anton'];
+
 function selectPair(tipoPost, objetivo, lastPairs = []) {
   let cands = TYPE_PAIRS.filter(p => p.best_for.includes(tipoPost) || p.best_for.includes(objetivo));
   if (!cands.length) cands = [...TYPE_PAIRS];
+
+  // Bloqueio por contexto emocional: remover pares com fontes agressivas
+  if (objetivo === 'engajamento' || objetivo === 'salvamento' || objetivo === 'compartilhamento') {
+    const softCands = cands.filter(p =>
+      !AGGRESSIVE_FONT_IDS.includes(p.headline) && !AGGRESSIVE_FONT_IDS.includes(p.body)
+    );
+    if (softCands.length) cands = softCands;
+  }
+
   if (lastPairs.length) {
     const filtered = cands.filter(p => !lastPairs.includes(p.id));
     if (filtered.length) cands = filtered;

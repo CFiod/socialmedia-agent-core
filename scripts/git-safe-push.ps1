@@ -88,7 +88,7 @@ Write-Host "[GIT] Adicionando arquivos com git add ." -ForegroundColor Yellow
 git add .
 
 # GUARD: verificar se .env entrou no stage por engano
-$stagedEnv = git diff --cached --name-only | Select-String -Pattern '\.env'
+$stagedEnv = git diff --cached --name-only | Select-String -Pattern '\.env' | Where-Object { $_ -notmatch '\.env\.example' }
 if ($stagedEnv) {
     Write-Host "[ERRO] .env foi adicionado ao stage acidentalmente!" -ForegroundColor Red
     Write-Host "       Revertendo git add e abortando." -ForegroundColor Red

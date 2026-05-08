@@ -301,6 +301,7 @@ export function decideScene({
   tipoPost = 'frase_curta',
   modo = 'cotidiano',
   history = null,
+  performanceHint = null,   // 🔄 cena com melhor score real (learning engine)
 } = {}) {
 
   // ── 1. Carregar histórico ──────────────────────────────────────────────────
@@ -311,6 +312,12 @@ export function decideScene({
 
   // ── 2. Calcular pesos base por objetivo ────────────────────────────────────
   const weights = { ...(SCENE_WEIGHTS_BY_OBJETIVO[objetivo] || SCENE_WEIGHTS_BY_OBJETIVO.engajamento) };
+
+  // ── 2b. 🔄 LEARNING BOOST: favorece cena campeã de engajamento ─────────────
+  if (performanceHint && weights[performanceHint] !== undefined) {
+    weights[performanceHint] *= 2.0;
+    console.log(`   🔄 [SceneEngine] Learning boost: "${performanceHint}" peso x2 (melhor performance real)`);
+  }
 
   // ── 3. REGRA: Nunca repetir tipo de cena 2x seguidas ──────────────────────
   const lastScene = lastScenes[lastScenes.length - 1];

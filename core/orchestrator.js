@@ -44,6 +44,9 @@ async function approveCopy(slides, originalCaptionObj) {
         console.log(`  Principal  : ${slide.texto_principal}`);
         console.log(`  Secundário : ${slide.texto_secundario}`);
         console.log(`  Destaques  : [${(slide.destaques || []).join(', ')}]`);
+        if (slide.frase_final || slide.cta) {
+            console.log(`  CTA        : ${slide.frase_final || slide.cta}`);
+        }
         console.log(`  Visual     : ${slide.descricao_base}`);
         console.log(sep);
 
@@ -64,12 +67,15 @@ async function approveCopy(slides, originalCaptionObj) {
             const campos = [
                 { key: 'texto_principal',  label: 'Principal' },
                 { key: 'texto_secundario', label: 'Secundário' },
-                { key: 'descricao_base', label: 'Visual (EN)' },
+                { key: 'frase_final',      label: 'CTA Visual (frase_final)' },
+                { key: 'descricao_base',   label: 'Visual (EN)' },
             ];
             for (const c of campos) {
-                const novo = await askQuestion(`  ${c.label} [atual: "${slide[c.key]}"]\n  Novo (Enter = manter): `);
-                if (novo && novo !== slide[c.key]) {
-                    captureEdit(c.key, slide[c.key], novo);
+                const atual = slide[c.key] || '';
+                if (!atual && c.key !== 'frase_final') continue; // pula campos vazios exceto CTA
+                const novo = await askQuestion(`  ${c.label} [atual: "${atual}"]\n  Novo (Enter = manter): `);
+                if (novo && novo !== atual) {
+                    captureEdit(c.key, atual, novo);
                     slide[c.key] = novo;
                 }
             }

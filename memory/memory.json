@@ -255,6 +255,89 @@
       "estilo_usado": "cinematic_soft",
       "persona_usada": "woman_35_profissional",
       "categoria_conteudo": "carrossel"
+    },
+    {
+      "id": "2026-05-06-1778090764048",
+      "data": "2026-05-06",
+      "tema": "O narcisismo é o investimento da libido no próprio ego.",
+      "hook_type": "",
+      "arquetipo_id": "",
+      "estrutura_usada": "",
+      "palavras_chave": [],
+      "inicio_slide_1": "O narcisismo é",
+      "hook": "O narcisismo é o investimento da libido no próprio ego.",
+      "sintomas": [],
+      "insight": "",
+      "cta": "",
+      "hashtags": [],
+      "composicao": "",
+      "estilo_usado": "",
+      "persona_usada": "",
+      "categoria_conteudo": ""
+    },
+    {
+      "id": "2026-05-07-1778176588977",
+      "data": "2026-05-07",
+      "tema": "",
+      "hook_type": "",
+      "arquetipo_id": "",
+      "estrutura_usada": "",
+      "palavras_chave": [
+        "perfeccionismo"
+      ],
+      "inicio_slide_1": "Seu perfeccionismo não",
+      "hook": "Seu perfeccionismo não é qualidade",
+      "sintomas": [],
+      "insight": "",
+      "cta": "É medo de rejeição travestido de disciplina.",
+      "hashtags": [],
+      "composicao": "negative_space",
+      "estilo_usado": "minimal_clean",
+      "persona_usada": "",
+      "categoria_conteudo": ""
+    },
+    {
+      "id": "2026-05-07-1778176987303",
+      "data": "2026-05-07",
+      "tema": "",
+      "hook_type": "",
+      "arquetipo_id": "",
+      "estrutura_usada": "",
+      "palavras_chave": [
+        "atrasada",
+        "perdida"
+      ],
+      "inicio_slide_1": "Você não está",
+      "hook": "Você não está atrasada",
+      "sintomas": [],
+      "insight": "",
+      "cta": "Simplesmente perdida no seu próprio tempo",
+      "hashtags": [],
+      "composicao": "center_focus",
+      "estilo_usado": "",
+      "persona_usada": "no_person",
+      "categoria_conteudo": "autor"
+    },
+    {
+      "id": "2026-05-07-1778177301723",
+      "data": "2026-05-07",
+      "tema": "",
+      "hook_type": "",
+      "arquetipo_id": "",
+      "estrutura_usada": "",
+      "palavras_chave": [
+        "decisões"
+      ],
+      "inicio_slide_1": "A maioria das",
+      "hook": "A maioria das suas decisões",
+      "sintomas": [],
+      "insight": "",
+      "cta": "É baseada em medo, não em desejo.",
+      "hashtags": [],
+      "composicao": "center_focus",
+      "estilo_usado": "cinematic_soft",
+      "persona_usada": "",
+      "categoria_conteudo": ""
     }
   ]
 }

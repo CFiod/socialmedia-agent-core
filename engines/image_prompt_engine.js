@@ -50,6 +50,48 @@ ABSOLUTE RULES (NON-NEGOTIABLE):
 - Subject max 40% of frame, min 60% environment/space
 - Single cohesive scene filling entire canvas`;
 
+// ── HARD NEGATIVE PROMPTS POR TIPO DE CENA ──────────────────────────────────
+// Instrução crítica: evitar o padrão "mulher bonita + fundo genérico"
+
+const SCENE_HARD_NEGATIVES = {
+  humano: `
+HARD NEGATIVE (human scene — NON-NEGOTIABLE):
+AVOID: close-up portraits, generic attractive women, beauty photography style,
+influncer aesthetic, empty facial expression, selfie framing, studio glamour,
+magazine beauty cover, catalogue model pose, neutral background headshot,
+forced smile, stock photo feeling, commercial beauty ad`,
+
+  silhueta: `
+HARD NEGATIVE (silhouette scene):
+AVOID: visible facial features, recognizable identity, clear face, frontal
+identifiable portrait, lit face visible, body lit uniformly, catalogue silhouette`,
+
+  objeto: `
+HARD NEGATIVE (object scene):
+AVOID: human faces or figures, people present, stock product photography,
+white seamless background, catalogue object layout, commercial product shot`,
+
+  ambiente: `
+HARD NEGATIVE (environment scene):
+AVOID: people present, human figures, tourist photography, travel stock photo,
+postcard aesthetic, generic landscape without emotion, empty postcard sunset`,
+
+  simbolico: `
+HARD NEGATIVE (symbolic scene):
+AVOID: human faces or figures, literal illustration, generic symbols, clipart,
+flat design, cartoon, emoji-style, icon representation, infographic elements`,
+
+  abstrato: `
+HARD NEGATIVE (abstract scene):
+AVOID: identifiable subjects, people, faces, realistic objects, stock texture,
+generic gradient background, plain single-color, digital noise without purpose`,
+
+  tipografia: `
+HARD NEGATIVE (typography background):
+AVOID: busy cluttered background, competing visual elements, faces, people,
+high contrast texture that prevents text readability, warm oversaturated tones`,
+};
+
 // ── ENGINE PRINCIPAL ────────────────────────────────────────────────────────
 
 /**
@@ -73,9 +115,16 @@ export function buildCinematicPrompt({
   estilo = 'editorial_minimalist',
   persona = null,
   semanticScene = null,
+  imageIntentionDirective = null,   // 🖼️ Image Intention Layer (Instrucao.txt)
 } = {}) {
 
   const blocks = [];
+
+  // ── 0. IMAGE INTENTION DIRECTIVE (highest priority, if present) ────────────────
+  // Deve vir ANTES de tudo para ancorarem o modelo na intenção visual correta
+  if (imageIntentionDirective) {
+    blocks.push(imageIntentionDirective);
+  }
 
   // ── 1. SCENE HEADER ────────────────────────────────────────────────────────
   blocks.push(`Instagram high-performance social media image.`);
@@ -148,12 +197,18 @@ export function buildCinematicPrompt({
   // ── 11. ANTI-GENERIC RULES ────────────────────────────────────────────────
   blocks.push(ANTI_GENERIC_BLOCK);
 
-  // ── 12. COMPOSITION FORBIDDEN BLOCK ───────────────────────────────────────
+  // ── 12. SCENE-SPECIFIC HARD NEGATIVE PROMPTS (Instrucao.txt critical fix) ─
+  const sceneNegative = SCENE_HARD_NEGATIVES[scene.tipo];
+  if (sceneNegative) {
+    blocks.push(sceneNegative);
+  }
+
+  // ── 13. COMPOSITION FORBIDDEN BLOCK ───────────────────────────────────────
   if (composition && composition.forbidden_block) {
     blocks.push(composition.forbidden_block);
   }
 
-  // ── 13. PERSONA SCALE LIMIT ───────────────────────────────────────────────
+  // ── 14. PERSONA SCALE LIMIT ───────────────────────────────────────────────
   if (scene.requer_personagem) {
     blocks.push(`\n🚫 PERSONA SCALE LIMIT:\n- Subject max 40% of image area\n- Min 60% environment/composition/negative space\n- FORBIDDEN: full-frame face, extreme close-up filling image`);
   }

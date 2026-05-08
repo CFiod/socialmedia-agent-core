@@ -30,12 +30,41 @@ function normalizeWord(word) {
     return word.replace(/[.,!?;:()""\u2018\u2019\u201C\u201D'"]/g, '').toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 }
 
+/**
+ * Filtra a lista de destaques para conter APENAS palavras que existem
+ * no texto real (principal + secundário). Evita destacar palavras fantasmas.
+ */
+export function filterHighlightsToText(destaques, textoPrincipal = '', textoSecundario = '') {
+    if (!destaques || destaques.length === 0) return [];
+    const fullText = `${textoPrincipal} ${textoSecundario}`;
+    const fullNorm = normalizeWord(fullText);
+    const wordsInText = fullText.split(/\s+/).map(w => normalizeWord(w));
+    return destaques.filter(d => {
+        const norm = normalizeWord(d);
+        if (norm.length < 3) return false;
+        // Suporte a destaques multi-palavra (ex: "Complexo de Édipo")
+        if (d.includes(' ')) {
+            return fullNorm.includes(norm);
+        }
+        return wordsInText.includes(norm);
+    });
+}
+
 function isHighlightWord(word, explicitHighlights) {
     if (!explicitHighlights || explicitHighlights.length === 0) return false;
     const cleanWord = normalizeWord(word);
     if (cleanWord.length < 3 || IGNORE_HIGHLIGHTS.includes(cleanWord)) return false;
-    const normHighlights = explicitHighlights.map(h => normalizeWord(h));
-    return normHighlights.includes(cleanWord);
+    for (const h of explicitHighlights) {
+        const normH = normalizeWord(h);
+        // Match exato (single word highlight)
+        if (normH === cleanWord) return true;
+        // Match parcial (palavra faz parte de destaque multi-palavra, ex: "COMPLEXO" ∈ "COMPLEXO DE EDIPO")
+        if (h.includes(' ')) {
+            const parts = h.split(/\s+/).map(p => normalizeWord(p)).filter(p => p.length >= 3);
+            if (parts.includes(cleanWord)) return true;
+        }
+    }
+    return false;
 }
 
 // ── WRAP TEXT & RENDER ───────────────────────────────────────────────────────
@@ -93,18 +122,36 @@ function renderLine(ctx, words, startX, y, highlightColor, useHighlight, explici
         const word = words[wi];
         const shouldHighlight = useHighlight && isHighlightWord(word, explicitHighlights);
 
-        if (shouldHighlight) {
-            ctx.fillStyle = highlightColor;
-        } else {
-            ctx.fillStyle = baseColor;
-        }
-
         ctx.shadowBlur = 10;
 
         const isLast = wi === words.length - 1;
         const wordText = isLast ? word : word + ' ';
-        ctx.strokeText(wordText, currentX, y);
-        ctx.fillText(wordText, currentX, y);
+
+        if (shouldHighlight) {
+            // Separar texto da pontuação final (ex: "assombra?" → highlight "assombra" + normal "?")
+            const trailingPuncMatch = word.match(/^(.+?)([?.!,;:]+)$/);
+            if (trailingPuncMatch) {
+                const [, cleanPart, punctuation] = trailingPuncMatch;
+                const cleanWidth = ctx.measureText(cleanPart).width;
+                // Desenhar parte destacada
+                ctx.fillStyle = highlightColor;
+                ctx.strokeText(cleanPart, currentX, y);
+                ctx.fillText(cleanPart, currentX, y);
+                // Desenhar pontuação na cor base
+                const puncText = isLast ? punctuation : punctuation + ' ';
+                ctx.fillStyle = baseColor;
+                ctx.strokeText(puncText, currentX + cleanWidth, y);
+                ctx.fillText(puncText, currentX + cleanWidth, y);
+            } else {
+                ctx.fillStyle = highlightColor;
+                ctx.strokeText(wordText, currentX, y);
+                ctx.fillText(wordText, currentX, y);
+            }
+        } else {
+            ctx.fillStyle = baseColor;
+            ctx.strokeText(wordText, currentX, y);
+            ctx.fillText(wordText, currentX, y);
+        }
         currentX += wordWidths[wi];
     }
 
@@ -124,34 +171,52 @@ function hexLuminance(hex) {
     return 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b);
 }
 
-// Escolhe a melhor cor vibrante para destaque — nunca escura ou acinzentada
-// Paleta curada de cores "Instagramáveis" vibrantes e legíveis
-const VIBRANT_PALETTE = [
+// Paleta vibrante para fundos ESCUROS (imagens escuras, vinhetas pesadas)
+const VIBRANT_DARK_BG = [
     '#FFD700', // Dourado
-    '#FF4500', // Vermelho-Laranja
-    '#00CFFF', // Azul Ciano
-    '#FF2D55', // Rosa Vibrante (Instagram-style)
-    '#32FF7E', // Verde Neon
     '#FF9F0A', // Laranja Âmbar
+    '#FF2D55', // Rosa Vibrante
+    '#00CFFF', // Azul Ciano
     '#BF5AF2', // Roxo Premium
-    '#30D158', // Verde
+    '#FF4500', // Vermelho-Laranja
 ];
 
-function pickVibrantColor(gradientColors, seedIndex = 0) {
-    // Tenta usar a 2ª cor do gradiente se for suficientemente brilhante
+// Paleta saturada para fundos CLAROS/PASTEL (precisa de alto contraste)
+const VIBRANT_LIGHT_BG = [
+    '#C0392B', // Vermelho Escuro
+    '#8E44AD', // Roxo Forte
+    '#1A73E8', // Azul Royal
+    '#E67E22', // Laranja Queimado
+    '#16A085', // Verde-Azulado
+    '#D4380D', // Terracota
+    '#7B2FBE', // Violeta
+];
+
+/**
+ * Escolhe cor de destaque com contraste garantido contra o tom da imagem.
+ * @param {string[]} gradientColors — cores do gradiente da imagem
+ * @param {number}   seedIndex      — variação por slide
+ * @param {boolean}  isLightImage   — true se a imagem é clara/pastel
+ */
+function pickVibrantColor(gradientColors, seedIndex = 0, isLightImage = false) {
+    // Imagem clara → paleta escura/saturada para contraste máximo
+    if (isLightImage) {
+        return VIBRANT_LIGHT_BG[seedIndex % VIBRANT_LIGHT_BG.length];
+    }
+
+    // Imagem escura → tentar usar a cor do gradiente se for suficientemente brilhante
     if (gradientColors?.length > 1) {
         const lum = hexLuminance(gradientColors[1]);
-        if (lum > 0.12) { // Só aceita se não for muito escura
+        if (lum > 0.15 && lum < 0.85) { // vibrante mas não pastel claro
             return gradientColors[1];
         }
-        // Tenta a 1ª cor
         const lum0 = hexLuminance(gradientColors[0]);
-        if (lum0 > 0.12) {
+        if (lum0 > 0.15 && lum0 < 0.85) {
             return gradientColors[0];
         }
     }
-    // Fallback: paleta vibrante curada com variação por slide
-    return VIBRANT_PALETTE[seedIndex % VIBRANT_PALETTE.length];
+    // Fallback: paleta vibrante escura
+    return VIBRANT_DARK_BG[seedIndex % VIBRANT_DARK_BG.length];
 }
 
 // Retorna '#FFFFFF' ou '#111111' dependendo do contraste com a cor dada
@@ -512,17 +577,19 @@ export async function overlayTextOnImage(imageBuffer, item, width, height, style
     const seed = metaItem?.globalSeed || titleHash;
     const selectedFont = fontFamilies[seed % fontFamilies.length];
 
-    // ── HIGHLIGHT COLOR DINÂMICA (INTELIGENTE) ──
-    // pickVibrantColor garante que nunca usaremos uma cor escura/acinzentada
-    let highlightColor = pickVibrantColor(styleOptions?.gradientColors, seed);
-
     // ── BASE TEXT COLOR (CONTRASTE) ──
-    // Utilizar o texto em branco apenas no caso de contraste com fundo escuro
+    // isDarkText precisa ser declarado ANTES de isLightImage (fix: TDZ bug)
     const isDarkText = styleOptions?.textColor === 'black';
     const baseTextColor = isDarkText ? '#111111' : '#FFFFFF';
     const baseSubColor  = isDarkText ? '#222222' : '#F0F0F0';
     const strokeColor   = isDarkText ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.85)';
     const shadowColor   = isDarkText ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.9)';
+
+    // ── HIGHLIGHT COLOR DINÂMICA (CONTRASTE-AWARE) ──
+    // Para imagens claras/pastel: usa paleta escura/saturada (contraste WCAG)
+    // Para imagens escuras: usa paleta vibrante neon
+    const isLightImage = isDarkText; // analyzeImageForText retorna textColor:'black' para imagens claras
+    let highlightColor = pickVibrantColor(styleOptions?.gradientColors, seed, isLightImage);
 
     // ── FACE-AWARE Y ADJUSTMENT ──
     // Se temos rostos detectados e eles estão na metade superior da imagem,
@@ -546,7 +613,7 @@ export async function overlayTextOnImage(imageBuffer, item, width, height, style
     let headlineHeight = 0;
     if (adaptedTitle) {
         ctx.font = `bold ${typo.headline}px ${selectedFont}`;
-        headlineHeight = getTextMetrics(ctx, adaptedTitle.toUpperCase(), positions.headline.maxWidth, Math.round(typo.headline * 1.25));
+        headlineHeight = getTextMetrics(ctx, adaptedTitle, positions.headline.maxWidth, Math.round(typo.headline * 1.25));
     }
 
     let subHeight = 0;
@@ -572,6 +639,14 @@ export async function overlayTextOnImage(imageBuffer, item, width, height, style
         }
     }
 
+    // ── FILTRAR DESTAQUES (hoisted: necessário para headline E subtitle) ──
+    // Declarado antes dos blocos de render para estar no escopo de ambos
+    const destaquesFiltrados = filterHighlightsToText(
+        item.destaques || [],
+        item.texto_principal || item.titulo || '',
+        item.texto_secundario || ''
+    );
+
     // ── DRAW HEADLINE ──
     if (adaptedTitle) {
         ctx.font = `bold ${typo.headline}px ${selectedFont}`;
@@ -581,8 +656,8 @@ export async function overlayTextOnImage(imageBuffer, item, width, height, style
         ctx.shadowColor = shadowColor;
         ctx.shadowBlur = 18;
         ctx.fillStyle = baseTextColor;
-        const mainText = adaptedTitle.toUpperCase();
-        currentTextY = wrapText(ctx, mainText, positions.headline.x, currentTextY, positions.headline.maxWidth, Math.round(typo.headline * 1.25), true, highlightColor, item.destaques || [], baseTextColor, positions.headline.align);
+        const mainText = adaptedTitle;
+        currentTextY = wrapText(ctx, mainText, positions.headline.x, currentTextY, positions.headline.maxWidth, Math.round(typo.headline * 1.25), true, highlightColor, destaquesFiltrados, baseTextColor, positions.headline.align);
     } else {
         currentTextY = currentTextY + (positions.subtitle.y - positions.headline.y);
     }
@@ -596,11 +671,11 @@ export async function overlayTextOnImage(imageBuffer, item, width, height, style
         ctx.shadowBlur = 12;
         ctx.shadowColor = shadowColor;
         ctx.fillStyle = baseSubColor;
-        
+
         // V5: Dynamic Stacking — gap proporcional ao headline
         const subY = adaptedTitle ? currentTextY + gap : currentTextY;
 
-        wrapText(ctx, adaptedSub, positions.subtitle.x, subY, positions.subtitle.maxWidth, Math.round(typo.sub * 1.45), true, highlightColor, item.destaques || [], baseSubColor, positions.subtitle.align);
+        wrapText(ctx, adaptedSub, positions.subtitle.x, subY, positions.subtitle.maxWidth, Math.round(typo.sub * 1.45), true, highlightColor, destaquesFiltrados, baseSubColor, positions.subtitle.align);
     }
 
     // ── DRAW CTA ──

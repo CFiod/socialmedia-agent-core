@@ -285,6 +285,14 @@ function normalizeOutput(parsedJson, originalTipo) {
   };
 
   const processarDestaques = (slide) => {
+    // 1. Limpar destaques fornecidos pelo LLM para garantir que só contêm palavras do texto principal/secundário
+    if (slide.destaques && Array.isArray(slide.destaques) && slide.destaques.length > 0) {
+      const fullText = `${slide.texto_principal || ''} ${slide.texto_secundario || ''}`.toLowerCase();
+      // Remove a pontuação para comparar melhor, mas o includes funciona bem como aproximação
+      slide.destaques = slide.destaques.filter(d => fullText.includes(d.toLowerCase()));
+    }
+
+    // 2. Se ficar vazio, faz a extração automática
     if (!slide.destaques || slide.destaques.length === 0) {
       slide.destaques = [
         ...extractHighlights(slide.texto_principal),

@@ -123,6 +123,78 @@ export const COPY_STRUCTURES = {
   },
 };
 
+// ── ÂNGULOS ROTATIVOS OBRIGATÓRIOS (Instrucao.txt) ───────────────────────────
+// Evita padrões saturados como "Você acha que... Mas na verdade..."
+
+export const ANGULOS_ROTATIVOS = [
+  {
+    id: 'confronto_direto',
+    label: 'Confronto Direto',
+    descricao: 'Fala diretamente o que o leitor evita admitir',
+    exemplos: [
+      'Você não está cansado da situação. Você está cansado de si mesmo.',
+      'Para de esperar permissão pra mudar.',
+      'O problema não é o outro. É o que você tolera.',
+    ],
+    structure: 'impacto_curto',
+  },
+  {
+    id: 'insight_inesperado',
+    label: 'Insight Inesperado',
+    descricao: 'Revela uma conexão que o leitor nunca considerou',
+    exemplos: [
+      'Ansiedade e perfeccionismo são a mesma coisa com nomes diferentes.',
+      'Seu corpo já sabe o que sua mente ainda recusa.',
+      'Cansaço crônico não é falta de descanso. É falta de sentido.',
+    ],
+    structure: 'expansao_emocional',
+  },
+  {
+    id: 'quebra_de_crenca_forte',
+    label: 'Quebra de Crença Forte',
+    descricao: 'Destrói uma crença sem suavização',
+    exemplos: [
+      'Você não é forte. Aprendeu a esconder o quanto dói.',
+      'Determinação sem cuidado é só outro nome pra autodestruição.',
+      'O que você chama de independência talvez seja isolamento.',
+    ],
+    structure: 'impacto_curto',
+  },
+  {
+    id: 'narrativa_curta',
+    label: 'Narrativa Curta',
+    descricao: 'Mini história de 1-2 linhas que gera identificação instantânea',
+    exemplos: [
+      'Ele achava que tinha chegado. Descobriu que mal tinha começado.',
+      'Ela largou tudo que fazia sentido pra fora. Dentro ainda era caos.',
+      'Funcionou por anos. Até o dia que não funcionou mais.',
+    ],
+    structure: 'expansao_emocional',
+  },
+  {
+    id: 'pergunta_desconfortavel',
+    label: 'Pergunta Desconfortável',
+    descricao: 'Pergunta que o leitor não quer responder mas não consegue ignorar',
+    exemplos: [
+      'Quando foi a última vez que você priorizou o que de verdade importa?',
+      'Você faria o que faz hoje se ninguém fosse ver?',
+      'O que você continua escolhendo mesmo sabendo que te machuca?',
+    ],
+    structure: 'expansao_emocional',
+  },
+];
+
+// Seleciona ângulo rotativo forçando ciclo (nenhum repete antes de todos serem usados)
+export function selectAnguloRotativo(lastAngulos = []) {
+  const ids = ANGULOS_ROTATIVOS.map(a => a.id);
+  const recentWindow = Math.min(lastAngulos.length, ids.length - 1);
+  const recentUsed = lastAngulos.slice(-recentWindow);
+  const available = ids.filter(id => !recentUsed.includes(id));
+  const pool = available.length > 0 ? available : ids;
+  const chosen = pool[Math.floor(Math.random() * pool.length)];
+  return ANGULOS_ROTATIVOS.find(a => a.id === chosen) || ANGULOS_ROTATIVOS[0];
+}
+
 // ── INTENT MAPPING ───────────────────────────────────────────────────────────
 
 const OBJETIVO_TO_INTENT = {
@@ -171,32 +243,45 @@ export function generateStrategicCopy({
   // 1. Determinar intent
   const intent = OBJETIVO_TO_INTENT[objetivo] || 'engajar';
 
-  // 2. Selecionar hook pattern
+  // 2. Selecionar ângulo rotativo (anti-repetição estrutural)
+  const lastAngulos = (lastHookPatterns || []).filter(h =>
+    ANGULOS_ROTATIVOS.some(a => a.id === h)
+  );
+  const angulo = selectAnguloRotativo(lastAngulos);
+
+  // 3. Selecionar hook pattern (dentro do ângulo rotativo ou clássico)
   const hookPattern = selectHookPattern(intent, lastHookPatterns);
 
-  // 3. Selecionar estrutura
-  const structure = selectStructure(intent, lastStructures);
+  // 4. Selecionar estrutura (preferência do ângulo rotativo)
+  const structure = angulo.structure || selectStructure(intent, lastStructures);
 
-  // 4. Gerar copy do template do hook
+  // 5. Gerar copy: prioriza exemplos do ângulo rotativo quando em ciclo anti-repetição
   const templates = HOOK_PATTERNS[hookPattern].templates;
-  const copy = randomPick(templates);
+  const copyTemplate = randomPick(templates);
 
-  // 5. Log
-  console.log(`   🧠 [CopyIntent] Intent: ${intent} | Hook: ${hookPattern} | Estrutura: ${structure}`);
-  console.log(`   ✍️  "${copy.headline}"`);
+  // Enriquecer subtexto com exemplo do ângulo quando template não tem subtexto
+  const anguloExemplo = randomPick(angulo.exemplos);
+  const subtexto = copyTemplate.subtexto ||
+    (angulo.id !== 'pergunta_desconfortavel' ? `Reflexão: "${anguloExemplo}"` : '');
+
+  // 6. Log
+  console.log(`   🧠 [CopyIntent] Intent: ${intent} | Hook: ${hookPattern} | Ângulo: ${angulo.id} | Estrutura: ${structure}`);
+  console.log(`   ✍️  "${copyTemplate.headline}"`);
 
   return {
     intent,
     hookPattern,
+    anguloRotativo: angulo.id,
     structure,
     copy: {
-      headline: copy.headline,
-      subtexto: copy.subtexto || '',
+      headline: copyTemplate.headline,
+      subtexto: subtexto || '',
     },
     psychology: HOOK_PATTERNS[hookPattern].psychology,
     meta: {
       intent,
       hookPattern,
+      anguloRotativo: angulo.id,
       structure,
       emotionId,
       objetivo,

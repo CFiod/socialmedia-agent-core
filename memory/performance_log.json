@@ -65,6 +65,32 @@
       "headline": "A culpa que você sente",
       "typography_pair": "editorial_power",
       "logged_at": "2026-05-04T17:47:09.166Z"
+    },
+    {
+      "scene_type": "humano",
+      "composition": "side_weight",
+      "style": "minimal_clean",
+      "hook_pattern": "quebra_crenca",
+      "copy_intent": "educar",
+      "gender": "neutral",
+      "objetivo": "salvamento",
+      "tipoPost": "insight",
+      "headline": "Seu perfeccionismo não é qualidade",
+      "typography_pair": "modern_minimal",
+      "logged_at": "2026-05-07T16:54:01.895Z"
+    },
+    {
+      "scene_type": "ambiente",
+      "composition": "split_emotion",
+      "style": "cinematic_soft",
+      "hook_pattern": "verdade_desconfortavel",
+      "copy_intent": "engajar",
+      "gender": "none",
+      "objetivo": "engajamento",
+      "tipoPost": "observacao",
+      "headline": "A maioria das suas decisões",
+      "typography_pair": "emotional_depth",
+      "logged_at": "2026-05-07T18:04:29.860Z"
     }
   ]
 }

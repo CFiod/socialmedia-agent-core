@@ -113,7 +113,23 @@ export async function generateAndSaveImages(outputDir, metaJson, slidesOrPost, a
     // Gera uma "character sheet" detalhada UMA VEZ e reutiliza em TODOS os slides
     // ══════════════════════════════════════════════════════════════════════════
     const genderStr = (publico?.genero || 'feminino').toLowerCase();
-    const isMale = genderStr.includes('masc') || genderStr.includes('homem');
+
+    // ── Detecção explícita de gênero no tema (ex: "Homem Narcisista") ──────
+    // Sobrescreve o padrão se o tema mencionar explicitamente o gênero
+    let effectiveGender = genderStr;
+    if (tema) {
+        const temaLow = tema.toLowerCase();
+        if (/\b(homem|masculino|hombre|man|male)\b/i.test(temaLow)) {
+            effectiveGender = 'masculino';
+        } else if (/\b(mulher|feminino|woman|female)\b/i.test(temaLow)) {
+            effectiveGender = 'feminino';
+        }
+        if (effectiveGender !== genderStr) {
+            console.log(`   🔀 [ImageService] Gênero ajustado pelo tema: "${tema}" → ${effectiveGender}`);
+        }
+    }
+
+    const isMale = effectiveGender.includes('masc') || effectiveGender.includes('homem');
     
     const personaMeta = metaJson._persona || null;
     let strictProtagonist;
@@ -187,10 +203,17 @@ export async function generateAndSaveImages(outputDir, metaJson, slidesOrPost, a
     };
 
     // -- GRADIENTE ÚNICO PARA A RODADA --
-    const gradients = [
+    const allGradients = [
         ['#997300', '#ffc000'], ['#226214', '#43cc25'], ['#731919', '#e52b2b'], 
         ['#3b0066', '#8b22ff'], ['#004e92', '#000428'], ['#1a1a1a', '#434343'], ['#1e3c72', '#2a5298']
     ];
+    // 🎨 Para modo Autor: evitar backgrounds escuros (preto/cinza) que prejudicam leitura
+    const authorSafeGradients = [
+        ['#997300', '#ffc000'], ['#226214', '#43cc25'], ['#731919', '#e52b2b'],
+        ['#3b0066', '#8b22ff'], ['#1e3c72', '#2a5298'],
+        ['#8B4513', '#D2691E'], ['#2E8B57', '#3CB371'], ['#8B0000', '#DC143C'],
+    ];
+    const gradients = autor ? authorSafeGradients : allGradients;
     const selectedGradient = gradients[Math.floor(Math.random() * gradients.length)];
 
     let currentHumanCount = 0;
@@ -241,6 +264,7 @@ export async function generateAndSaveImages(outputDir, metaJson, slidesOrPost, a
         
         let feedBuffer, storyBuffer;
         let success = false;
+        let userSkipped = false;  // 🐛 FIX: declarar no escopo externo (era declarado dentro do else, crashava no modo autor)
 
         if (useLocal) {
             console.log(`🧠 [Autor: ${autor.toUpperCase()}] Criando Card de Citação Profissional...`);
@@ -344,11 +368,10 @@ export async function generateAndSaveImages(outputDir, metaJson, slidesOrPost, a
             console.log('==================================================');
             
             let finalPrompt = fullPrompt;
-            let userSkipped = false;
+            userSkipped = false;  // reset para cada iteração (já declarado no escopo externo)
             if (config.OPENAI_API_KEY) {
                 const decision = await askQuestion('   🤔 Aprovar este prompt? [S]im / [N]ão / [E]ditar: ');
 
-                let finalPrompt = fullPrompt;
                 if (decision.toLowerCase() === 'n') {
                     console.log('   ⏩ Pulando geração de imagem para este item (usará fundo com gradiente)...');
                     userSkipped = true;
@@ -366,8 +389,10 @@ export async function generateAndSaveImages(outputDir, metaJson, slidesOrPost, a
                     while (!success && attempt <= maxAttempts) {
                         try {
                             console.log(`   └─ [OpenAI] Gerando com DALL-E 3 (Tentativa ${attempt}/${maxAttempts}${correctionRound > 0 ? `, Correção #${correctionRound}` : ''})...`);
-                            // Geramos apenas UMA imagem para garantir consistência e economizar créditos
-                            const imageUrl = await generateOpenAIImage(currentPrompt, "1024x1024");
+                            // Escolhe o tamanho com base no formato pedido (Story = ratio 9:16, Feed = 3:4)
+                            // DALL-E 3 suporta: 1024x1024 | 1024x1792 | 1792x1024
+                            const dalleSize = gerarStory && !gerarFeed ? "1024x1792" : "1024x1024";
+                            const imageUrl = await generateOpenAIImage(currentPrompt, dalleSize);
 
                             const buffer = await downloadImageBuffer(imageUrl);
                             
@@ -500,7 +525,7 @@ export async function generateAndSaveImages(outputDir, metaJson, slidesOrPost, a
             // 2. INTEGRAÇÃO V3: Detecção de Rosto e Layout-Aware Overlay
             const faces = await detectFaces(feedBuffer, 1080, 1440);
             visionData = {
-                faces: faces.length > 0 || itemStyling.faces, // Combina as duas fontes
+                hasFaces: faces.length > 0 || !!itemStyling.faces, // booleano — combina as duas fontes
                 facesBoxes: faces,
                 safeZone: itemStyling.safeZone,
                 imgW: 1080,
@@ -556,6 +581,9 @@ export async function generateAndSaveImages(outputDir, metaJson, slidesOrPost, a
 
         const formatLabel = [gerarFeed && 'Feed', gerarStory && 'Story'].filter(Boolean).join(' + ');
         console.log(`✅ ${useLocal ? 'Author Mode' : 'AI Generation'} finalizado para ${baseName} (${formatLabel})!`);
+
+        // ── Rastrear se o usuário pulou esta imagem (para bloquear Cloudinary) ──
+        let wasSkipped = userSkipped || false;
 
         // ── GATE DE APROVAÇÃO DE IMAGEM POR SLIDE ────────────────────────────
         // Permite refazer a imagem individual sem avançar no pipeline
@@ -648,21 +676,23 @@ export async function generateAndSaveImages(outputDir, metaJson, slidesOrPost, a
                     }
                     // Se regerou com sucesso, volta ao while para nova aprovação
                 } else {
-                    // 's', 'p', ou qualquer outra coisa = aprovar e avançar
+                    // 's' = aprovar; 'p' ou qualquer outra = pular (SEM upload)
                     imageApproved = true;
                     if (dec === 's') {
                         console.log(`   ✅ Imagem de ${baseName} aprovada.`);
+                        wasSkipped = false;
                     } else {
-                        console.log(`   ⏩ Imagem de ${baseName} mantida (pulada).`);
+                        console.log(`   ⏩ Imagem de ${baseName} PULADA — não será enviada ao Cloudinary.`);
+                        wasSkipped = true;
                     }
                 }
             }
         }
 
-        // ── Cloudinary Upload (após salvar localmente E aprovar) ─────────────
+        // ── Cloudinary Upload (apenas se aprovado — [P]ular bloqueia envio) ───
         // Prioriza Feed para a URL pública; fallback para Story se Feed não existir.
         const uploadPath = feedFilePath || storyFilePath;
-        if (uploadPath && process.env.CLOUDINARY_CLOUD_NAME) {
+        if (uploadPath && process.env.CLOUDINARY_CLOUD_NAME && !wasSkipped) {
             const tipoPost  = metaJson.tipo || 'post';
             // Suporte multi-tenant: lê CLOUDINARY_CLIENTE do .env (opcional)
             const cliente   = process.env.CLOUDINARY_CLIENTE || null;

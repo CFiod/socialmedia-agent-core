@@ -137,6 +137,73 @@ export function generateSafeZonesV3(width, height, attentionMap = []) {
   });
 }
 
+// ── FACE AVOIDANCE INTEGRATION (Instrucao.txt §2) ──────────────────────────
+// Integra zonas de rosto no cálculo de safe zones.
+// faceAvoidance: 0.0 (ignora rostos) → 1.0 (bloqueia zonas com rosto 100%)
+
+/**
+ * Calcula faceAvoidance com base no copyIntent.
+ * Psicanálise: posts emocionais NUNCA cobrem rosto.
+ * @param {string} copyIntent — 'emocional' | 'engajar' | 'converter' | 'educar'
+ * @returns {number} — 0.0 a 1.0
+ */
+export function calculateFaceAvoidance(copyIntent = 'engajar') {
+  const INTENT_AVOIDANCE = {
+    emocional: 1.0,    // Dor emocional → NÃO cobrir rosto
+    engajar:   0.6,    // Engajamento → pode aproximar
+    converter: 0.9,    // CTA → evitar rosto
+    educar:    0.7,    // Educacional → evitar parcialmente
+    atrair:    0.5,    // Atração → flexível
+  };
+  return INTENT_AVOIDANCE[copyIntent] ?? 0.7;
+}
+
+/**
+ * Remove ou penaliza zonas candidatas que colidem com rostos detectados.
+ *
+ * @param {Array} safeZones     — saída de generateSafeZonesV3()
+ * @param {Array} faces         — array de { x, y, width, height } dos rostos detectados
+ * @param {number} faceAvoidance — 0.0 a 1.0 (intensidade do bloqueio)
+ * @param {number} expansionFactor — percentual de expansão da zona do rosto (default 25%)
+ * @returns {Array} — safeZones re-rankeadas com penalização de rosto
+ */
+export function removeFaceZones(safeZones, faces = [], faceAvoidance = 1.0, expansionFactor = 0.25) {
+  if (!faces.length || faceAvoidance <= 0) return safeZones;
+
+  // Expandir cada rosto em 25% para criar "zona proibida"
+  const faceAreas = faces.map(f => ({
+    x: (f.x || 0) - (f.width || f.w || 0) * expansionFactor,
+    y: (f.y || 0) - (f.height || f.h || 0) * expansionFactor,
+    w: (f.width || f.w || 0) * (1 + expansionFactor * 2),
+    h: (f.height || f.h || 0) * (1 + expansionFactor * 2),
+  }));
+
+  return safeZones.map(zone => {
+    let faceRisk = 0;
+    for (const face of faceAreas) {
+      const ratio = overlapRatio(zone, face);
+      faceRisk += ratio;
+    }
+
+    // Penalizar risco proporcional ao faceAvoidance
+    const adjustedRisk = zone.risk + (faceRisk * faceAvoidance * 1.5);
+
+    // Se risco do rosto é alto E avoidance é máximo → forçar backdrop pesado
+    let strategy = zone.strategy;
+    if (faceRisk > 0.3 && faceAvoidance >= 0.8) {
+      strategy = 'background_overlay';
+    } else if (faceRisk > 0.1 && faceAvoidance >= 0.5) {
+      strategy = strategy === 'clean' ? 'gradient_underlay' : strategy;
+    }
+
+    return { ...zone, risk: parseFloat(adjustedRisk.toFixed(3)), strategy, faceRisk: parseFloat(faceRisk.toFixed(3)) };
+  }).sort((a, b) => {
+    const riskDiff = a.risk - b.risk;
+    if (Math.abs(riskDiff) < 0.05) return a.priority - b.priority;
+    return riskDiff;
+  });
+}
+
 /**
  * Resolve o melhor layout com base nas safe zones rankeadas.
  *

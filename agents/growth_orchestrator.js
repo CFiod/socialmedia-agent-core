@@ -48,9 +48,11 @@ import { decideScene } from '../engines/scene_engine.js';
 import { generateStrategicCopy } from '../engines/copy_intent_engine.js';
 import { decideTypography } from '../engines/typography_engine.js';
 import { buildCinematicPrompt } from '../engines/image_prompt_engine.js';
+import { imageIntentionEngine } from '../engines/imageIntention.engine.js';
 import {
   loadHistory, registerPost, getLastN,
   validateAgainstHistory, logPerformance,
+  ajustarPesosComBaseEmPerformance, loadPerformanceLog,
 } from '../engines/anti_repetition.js';
 
 // ── ORQUESTRADOR COMPLETO V6 ────────────────────────────────────────────────
@@ -62,13 +64,21 @@ export async function gerarPostCompleto(input = {}) {
   console.log('🧠 GROWTH SYSTEM V6 — Acquisition Machine Pipeline');
   console.log(SEP);
 
-  // ── 0. Load anti-repetition history ────────────────────────────────────────
+  // ── 0. Load history + 🔄 performance insights (learning loop) ───────────────
   const history = loadHistory();
   const lastScenes = getLastN(history, 'scene_type', 5);
   const lastComps = getLastN(history, 'composition', 5);
   const lastHooks = getLastN(history, 'hook_pattern', 5);
   const lastStyles = getLastN(history, 'style', 3);
   const lastTypePairs = getLastN(history, 'typography_pair', 3);
+
+  // 🔄 LEARNING ENGINE: Ajustar pesos com base em performance real
+  // Fecha o loop: métricas reais alimentam as próximas decisões de cena/copy
+  const performanceLog = loadPerformanceLog();
+  const performanceInsights = ajustarPesosComBaseEmPerformance(performanceLog);
+  if (performanceInsights) {
+    console.log(`   📊 [Learning] Insights: melhor cena="${performanceInsights.bestScene || 'N/A'}" | melhor hook="${performanceInsights.bestHookPattern || 'N/A'}"`);
+  }
 
   // ── 1. Growth Engine: Decisões de Crescimento ─────────────────────────────
   const growth = growthEngine(input);
@@ -81,6 +91,8 @@ export async function gerarPostCompleto(input = {}) {
     tipoPost: growth.tipoPost,
     modo: growth.modo,
     history,
+    // 🔄 Hint de performance: favorece cena com melhor histórico de engajamento
+    performanceHint: performanceInsights?.bestScene || null,
   });
 
   // V2 legacy scene (mantém compatibilidade)
@@ -152,6 +164,18 @@ export async function gerarPostCompleto(input = {}) {
     humanCount: lastScenes.filter(s => s === 'humano' || s === 'silhueta').length,
   });
 
+  // ── 6b. 🖼️ Image Intention Engine — Instrucao.txt: "ANTES de gerar imagem" ──
+  // Decisão explícita: humano/não, tipo de imagem, densidade, tema visual
+  const recentHumanCount = lastScenes.filter(s => s === 'humano' || s === 'silhueta').length;
+  const imageIntention = imageIntentionEngine({
+    scene: sceneV3,
+    composition: composicao,
+    copyResult: strategicCopy,
+    objetivo: growth.objetivo,
+    emotionId: emotionState?.id || 'curiosidade',
+    recentHumanCount,
+  });
+
   // ── 7. Content Classifier + Persona Bank ──────────────────────────────────
   const classificacao = classificarConteudo({ tipo: 'growth', qtdSlides: 1, tema: input.tema || '' });
   const variacao = gerarVariacaoCriativa(classificacao.categoria);
@@ -194,6 +218,8 @@ export async function gerarPostCompleto(input = {}) {
     estilo: estiloResult.base,
     persona: sceneV3.requer_personagem ? persona : null,
     semanticScene: semanticResult?.fullPrompt || null,
+    // 🖼️ Diretiva da Image Intention Layer (Instrucao.txt critical fix)
+    imageIntentionDirective: imageIntention.directive || null,
   });
 
   // V5 legacy prompt (fallback)
@@ -232,20 +258,26 @@ export async function gerarPostCompleto(input = {}) {
 
   // ── 13. 🆕 Anti-Repetition: Registrar no histórico ───────────────────────
   registerPost({
-    scene_type: sceneV3.tipo,
-    composition: composicao.tipo,
-    style: estiloResult.base,
-    hook_pattern: strategicCopy.hookPattern,
-    copy_structure: strategicCopy.structure,
-    copy_intent: strategicCopy.intent,
-    gender: sceneV3.gender?.gender || 'none',
-    environment: sceneV3.ambiente?.id || '',
-    objetivo: growth.objetivo,
-    tipoPost: growth.tipoPost,
-    emotionId: emotionState?.id || '',
-    headline: copy.headline,
-    typography_pair: typography.pair.id,
-    persona: persona.id,
+    scene_type:       sceneV3.tipo,
+    composition:      composicao.tipo,
+    style:            estiloResult.base,
+    hook_pattern:     strategicCopy.hookPattern,
+    angulo_rotativo:  strategicCopy.anguloRotativo || null,
+    copy_structure:   strategicCopy.structure,
+    copy_intent:      strategicCopy.intent,
+    gender:           sceneV3.gender?.gender || 'none',
+    environment:      sceneV3.ambiente?.id || '',
+    objetivo:         growth.objetivo,
+    tipoPost:         growth.tipoPost,
+    emotionId:        emotionState?.id || '',
+    headline:         copy.headline,
+    typography_pair:  typography.pair.id,
+    persona:          persona.id,
+    // 🖼️ Image Intention Layer — para análise cruzada no learning engine
+    image_tipo:       imageIntention.tipo_imagem || null,
+    image_densidade:  imageIntention.densidade || null,
+    image_usou_humano: imageIntention.usar_humano || false,
+    image_tema_visual: imageIntention.tema_visual || null,
   });
 
   // ── 14. 🆕 Performance Log: Registrar para feedback loop ──────────────────

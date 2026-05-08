@@ -59,6 +59,18 @@
       "antes": "Me chama no WhatsApp para começar",
       "depois": "Me chama no Whatsapp para começar a sua mudança!",
       "data": "2026-04-29"
+    },
+    {
+      "campo": "destaques",
+      "antes": "insegurança, narcisismo",
+      "depois": "perfeito, verdade, insegurança",
+      "data": "2026-05-05"
+    },
+    {
+      "campo": "destaques",
+      "antes": "Complexo de Édipo, dor",
+      "depois": "Complexo de Édipo, assombra",
+      "data": "2026-05-06"
     }
   ],
   "padroes": []
